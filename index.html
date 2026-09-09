@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <title>阅界 · 本地阅读器</title>
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=Long+Cang&display=swap">
 <style>
 /* ============ 基础 ============ */
 :root{
@@ -301,6 +301,12 @@ select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:1
         <option value="serif">衬线（宋体）</option>
         <option value="sans">黑体（无衬线）</option>
         <option value="kai">楷体</option>
+        <option value="yuan">圆体</option>
+        <option value="xingkai">行楷</option>
+        <option value="libian">隶书</option>
+        <option value="xiaowei">站酷小薇</option>
+        <option value="mszheng">马善政楷书</option>
+        <option value="longcang">龙藏手书</option>
       </select>
     </div>
     <div class="setting-sec">
@@ -428,7 +434,13 @@ const THEMES = {
 const FONTS = {
   serif: '"Noto Serif SC","Songti SC","STSong","SimSun",serif',
   sans:  '"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif',
-  kai:   '"Kaiti SC","KaiTi","STKaiti",serif'
+  kai:   '"Kaiti SC","KaiTi","STKaiti",serif',
+  yuan:  '"Yuanti SC","STYuanti","PingFang SC","Microsoft YaHei",system-ui,sans-serif',
+  xingkai: '"Xingkai SC","STXingkai","Kaiti SC","KaiTi","STKaiti",serif',
+  libian: '"Libian SC","STLiti","Songti SC","STSong","SimSun",serif',
+  xiaowei: '"ZCOOL XiaoWei","Songti SC","STSong","SimSun",serif',
+  mszheng: '"Ma Shan Zheng","Kaiti SC","KaiTi","STKaiti",serif',
+  longcang: '"Long Cang","Xingkai SC","Kaiti SC","KaiTi","STKaiti",serif'
 };
 let settings = { theme: 'sepia', customBg: '#f3e9d7', customText: '#5a4a34', bgImage: false, fontSize: 19, fontFamily: 'serif', lineHeight: 1.8, letterSpacing: 0 };
 try { settings = Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}')); } catch (e) {}
