@@ -1,0 +1,17 @@
+{
+  "name": "阅界 · 本地阅读器",
+  "short_name": "阅界",
+  "description": "离线本地电子书阅读器：支持 EPUB / PDF / TXT，从文件导入，可换背景与文字、提取目录",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f1e7",
+  "theme_color": "#b45309",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
