@@ -1,7 +1,7 @@
 /* 阅界 · PWA Service Worker
-   策略：应用壳预缓存；CDN 渲染库（epub.js/pdf.js/jszip/字体）运行时缓存，离线可读；
+   策略：应用壳预缓存；CDN 渲染库/字体运行时缓存，离线可读；
    同源页面网络优先（保证更新即时可见），离线回退缓存。 */
-const VERSION = 'yuejie-v1';
+const VERSION = 'yuejie-v2';
 const APP_SHELL = [
   './',
   './index.html',
@@ -10,7 +10,7 @@ const APP_SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
-const RUNTIME_HOSTS = ['cdn.jsdelivr.net', 'miaoda.feishu.cn'];
+const RUNTIME_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'miaoda.feishu.cn'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
