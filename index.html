@@ -1215,12 +1215,14 @@ function currentChapter() {
   if (activeType === 'txt') {
     const p = txtState.page;
     for (let k = 0; k < tocItems.length; k++) if (tocItems[k].page <= p) i = k; else break;
+    if (i < 0 && tocItems.length) i = 0; // 当前页在第一章标题之前时归属第一章，避免越界
   } else if (activeType === 'pdf') {
     const pg = currentPdfPage;
     for (let k = 0; k < tocItems.length; k++) {
       const cp = pdfOutlinePages && pdfOutlinePages[k] != null ? pdfOutlinePages[k] : Infinity;
       if (cp <= pg) i = k; else break;
     }
+    if (i < 0 && tocItems.length) i = 0; // PDF 书签页在当前位置之后时同样归属第一个书签
   } else if (activeType === 'epub') {
     let href = null;
     try { const loc = epubRendition && epubRendition.currentLocation(); href = loc && loc.start && loc.start.href; } catch (e) {}
@@ -1253,15 +1255,16 @@ function goChapter(step) {
 function chapterPageInfo(c) {
   if (!currentBook || !tocItems.length || !c.total) return '';
   const i = c.idx - 1;
+  if (i < 0 || i >= tocItems.length) return ''; // 防御：章节索引越界时直接返回空，避免崩溃
   let cur = 0, total = 0;
   if (activeType === 'txt' && txtState.pages.length) {
     const start = tocItems[i].page;
     const end = i + 1 < tocItems.length ? tocItems[i + 1].page - 1 : txtState.pages.length - 1;
-    cur = txtState.page - start + 1; total = end - start + 1;
+    cur = Math.max(1, txtState.page - start + 1); total = end - start + 1;
   } else if (activeType === 'pdf' && pdfDoc) {
     const start = (pdfOutlinePages && pdfOutlinePages[i] != null) ? pdfOutlinePages[i] : 1;
     const end = (i + 1 < tocItems.length && pdfOutlinePages && pdfOutlinePages[i + 1] != null) ? pdfOutlinePages[i + 1] - 1 : pdfDoc.numPages;
-    cur = currentPdfPage - start + 1; total = end - start + 1;
+    cur = Math.max(1, currentPdfPage - start + 1); total = end - start + 1;
   } else if (activeType === 'epub' && epubChapterPages && epubRendition) {
     let idx = i, pct = 0;
     try {
