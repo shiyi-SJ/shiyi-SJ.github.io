@@ -1,7 +1,7 @@
 /* 阅界 · PWA Service Worker
    策略：应用壳预缓存；CDN 渲染库/字体运行时缓存，离线可读；
    同源页面网络优先（保证更新即时可见），离线回退缓存。 */
-const VERSION = 'yuejie-v2';
+const VERSION = 'yuejie-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -61,3 +61,4 @@ self.addEventListener('fetch', e => {
     );
   }
 });
+//（注：内容由AI生成）
