@@ -92,9 +92,9 @@ input[type=range]{flex:1;accent-color:var(--accent);height:30px;margin:0}
 #txtViewer{overflow:hidden;color:var(--rb-text)}
 #txtStage{position:absolute;inset:0;overflow:hidden}
 .txt-page-layer{position:absolute;inset:0;padding:34px 26px;overflow:hidden;background:inherit}
-.txt-line{font-size:19px;line-height:1.8;letter-spacing:0;font-family:var(--txt-font, var(--serif));color:inherit;white-space:pre-wrap;word-break:break-word;text-align:justify;text-justify:inter-ideograph}
+.txt-line{font-size:var(--txt-size,19px);line-height:var(--txt-lh,1.8);letter-spacing:var(--txt-ls,0px);font-family:var(--txt-font, var(--serif));color:inherit;white-space:pre-wrap;word-break:break-word;text-align:justify;text-justify:inter-ideograph}
 .txt-line.indent{text-indent:2em}
-.txt-line.blank{height:14px;line-height:0}
+.txt-line.blank{height:var(--txt-seg,14px);line-height:0}
 /* ===== 翻页动画 ===== */
 @keyframes pgSlideR{from{transform:translateX(100%)}to{transform:none}}
 @keyframes pgSlideL{from{transform:translateX(-100%)}to{transform:none}}
@@ -133,7 +133,7 @@ input[type=color]{width:46px;height:38px;border:1px solid var(--line);border-rad
 .btn-ghost.danger{background:var(--danger-soft);color:var(--danger)}
 .btn-ghost:active{transform:scale(.96)}
 .thumb{width:54px;height:38px;border-radius:7px;object-fit:cover;border:1px solid var(--line)}
-select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:14px}
+select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:16px}
 .fontsize-row{display:flex;align-items:center;gap:12px}
 .fontsize-row input{flex:1}
 .fs-pill{min-width:46px;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -145,6 +145,34 @@ select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:1
 .toc-item.d2{padding-left:46px}
 .toc-item.d3{padding-left:64px}
 .toc-empty{padding:34px 12px;text-align:center;color:var(--ink-2);font-size:14px}
+
+/* ============ 底部栏（章节 + 导航 + 工具） ============ */
+.reader-bottom{display:block;padding:0 10px calc(6px + env(safe-area-inset-bottom))}
+.chap-row{display:flex;align-items:center;gap:8px;padding:7px 6px 2px;min-width:0}
+.chap-name{flex:1;min-width:0;font-size:12.5px;color:var(--chrome-text);opacity:.88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.chap-idx{flex:none;font-size:12.5px;font-weight:600;color:var(--chrome-text);font-variant-numeric:tabular-nums;opacity:.85}
+.chap-bar{flex:none;width:44px;height:3px;border-radius:2px;background:rgba(0,0,0,.12);overflow:hidden}
+.chap-bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.nav-row{display:flex;align-items:center;gap:4px;padding:2px 0 0}
+.chap-btn{flex:none;display:grid;place-items:center;height:36px;padding:0 10px;border-radius:9px;font-size:13px;font-weight:600;color:var(--chrome-text)}
+.chap-btn:active{background:rgba(0,0,0,.06)}
+.chap-btn[disabled]{opacity:.35;pointer-events:none}
+.tool-row{display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(0,0,0,.06);margin-top:2px;padding:2px 0}
+.tool-btn{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;padding:6px 4px 4px;border-radius:9px;color:var(--chrome-text);font-size:11px}
+.tool-btn svg{width:21px;height:21px}
+.tool-btn:active{background:rgba(0,0,0,.06)}
+
+/* ============ 底部弹出面板（翻页/背景） ============ */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;background:var(--card);border-radius:18px 18px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(30,20,8,.2)}
+.sheet.open{transform:none}
+.sheet-title{font-size:14px;color:var(--ink-2);text-align:center;padding:8px 0 6px}
+.sheet-list{display:flex;flex-direction:column;gap:4px;padding:4px 0}
+.sheet-item{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 12px;border-radius:11px;font-size:15px;color:var(--ink);min-height:46px}
+.sheet-item:active{background:var(--accent-soft)}
+.sheet-item.on{color:var(--accent);font-weight:700}
+.sheet-item.cancel{margin-top:6px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.sheet-swatches{display:flex;gap:14px;justify-content:center;padding:4px 0 10px}
+.sheet-row-btn{display:flex;gap:10px;justify-content:center;padding:2px 0 10px}
 
 /* ============ 弹层 ============ */
 .toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translate(-50%,16px);background:rgba(35,30,24,.94);color:#fff;padding:10px 20px;border-radius:999px;font-size:13.5px;z-index:60;opacity:0;pointer-events:none;transition:.25s;max-width:86vw;text-align:center}
@@ -229,19 +257,37 @@ select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:1
   </div>
 
   <footer class="reader-bottom">
-    <button class="icon-btn" id="btnPrev" aria-label="上一页">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <div class="progress-wrap">
-      <span class="prog-label" id="progLabel">0%</span>
-      <input type="range" id="progSlider" min="0" max="100" value="0" step="1" aria-label="阅读进度">
+    <div class="chap-row">
+      <span class="chap-name" id="chapName">—</span>
+      <span class="chap-idx" id="chapIdx">0/0</span>
+      <span class="chap-bar"><i id="chapBarFill"></i></span>
     </div>
-    <button class="icon-btn" id="btnNext" aria-label="下一页">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="icon-btn" id="btnSettings" aria-label="阅读设置">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="8" r="2.4" fill="var(--card)"/><circle cx="12" cy="14" r="2.4" fill="var(--card)"/><circle cx="18" cy="9" r="2.4" fill="var(--card)"/></svg>
-    </button>
+    <div class="nav-row">
+      <button class="chap-btn" id="btnPrevChap">上一章</button>
+      <div class="progress-wrap">
+        <span class="prog-label" id="progLabel">0%</span>
+        <input type="range" id="progSlider" min="0" max="100" value="0" step="1" aria-label="阅读进度">
+      </div>
+      <button class="chap-btn" id="btnNextChap">下一章</button>
+    </div>
+    <div class="tool-row">
+      <button class="tool-btn" id="btnToolToc" aria-label="目录">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/><circle cx="19" cy="17.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        <span>目录</span>
+      </button>
+      <button class="tool-btn" id="btnToolBg" aria-label="背景">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15l4.5-4.5L13 16M14.5 14.5L17 12l4 4"/></svg>
+        <span>背景</span>
+      </button>
+      <button class="tool-btn" id="btnToolAnim" aria-label="翻页">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 8-10 8z"/><path d="M14 4l10 8-10 8z"/></svg>
+        <span>翻页</span>
+      </button>
+      <button class="tool-btn" id="btnToolSettings" aria-label="设置">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="8" r="2.4" fill="var(--card)"/><circle cx="12" cy="14" r="2.4" fill="var(--card)"/><circle cx="18" cy="9" r="2.4" fill="var(--card)"/></svg>
+        <span>设置</span>
+      </button>
+    </div>
   </footer>
 </div>
 
@@ -341,6 +387,10 @@ select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:1
       <div class="setting-label"><span>字间距</span><span class="val" id="lsVal">0</span></div>
       <input type="range" id="lsSlider" min="0" max="2" step="0.1" value="0">
     </div>
+    <div class="setting-sec">
+      <div class="setting-label"><span>段间距</span><span class="val" id="segVal">14</span></div>
+      <input type="range" id="segSlider" min="0" max="32" step="2" value="14">
+    </div>
   </div>
 </div>
 
@@ -355,6 +405,35 @@ select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:1
       <button class="btn-ghost danger" id="modalOk">确定</button>
     </div>
   </div>
+</div>
+
+<!-- ===== 底部弹出面板：翻页动画 ===== -->
+<div class="sheet" id="animSheet">
+  <div class="sheet-title">翻页动画</div>
+  <div class="sheet-list">
+    <button class="sheet-item" data-anim="slide">滑动翻页</button>
+    <button class="sheet-item" data-anim="cover">覆盖翻页</button>
+    <button class="sheet-item" data-anim="none">无动画</button>
+  </div>
+  <button class="sheet-item cancel" id="animSheetClose">完成</button>
+</div>
+
+<!-- ===== 底部弹出面板：背景主题 ===== -->
+<div class="sheet" id="bgSheet">
+  <div class="sheet-title">背景主题</div>
+  <div class="sheet-swatches" id="bgSheetSwatches">
+    <button class="swatch" data-theme="light" title="浅色" style="background:#ffffff"></button>
+    <button class="swatch" data-theme="sepia" title="米黄" style="background:#f3e9d7"></button>
+    <button class="swatch" data-theme="green" title="护眼绿" style="background:#dcead8"></button>
+    <button class="swatch" data-theme="dark" title="夜间" style="background:#17171a"></button>
+    <button class="swatch custom" data-theme="custom" title="自定义">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+    </button>
+  </div>
+  <div class="sheet-row-btn">
+    <button class="btn-ghost" id="bgSheetFull">更多背景设置</button>
+  </div>
+  <button class="sheet-item cancel" id="bgSheetClose">完成</button>
 </div>
 
 <div id="txtMeasure"></div>
@@ -493,7 +572,7 @@ const FONTS = {
   fzjz: '"FZ JuZhen XinFang","FangSong","FangSong_GB2312","STFangsong","SimSun",serif',
   lxgw: '"LXGW WenKai","Kaiti SC","KaiTi","STKaiti",serif'
 };
-let settings = { theme: 'sepia', customBg: '#f3e9d7', customText: '#5a4a34', bgImage: false, fontSize: 19, fontFamily: 'serif', lineHeight: 1.8, letterSpacing: 0, pageAnim: 'slide' };
+let settings = { theme: 'sepia', customBg: '#f3e9d7', customText: '#5a4a34', bgImage: false, fontSize: 19, fontFamily: 'serif', lineHeight: 1.8, letterSpacing: 0, segSpacing: 14, pageAnim: 'slide' };
 try { settings = Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}')); } catch (e) {}
 let bgImageURL = null;
 
@@ -640,6 +719,8 @@ async function extractCoverAsync(rec) {
 let epubRendition = null, epubBook = null, epubLocations = null, lastEpubCfi = null;
 let pdfDoc = null, pdfShells = [], pdfRendered = null, currentPdfPage = 1, pdfObserver = null;
 let txtState = { lines: [], pages: [], chapters: [], page: 0 };
+let tocItems = [];          // 当前书目录条目（epub: {label,href} / pdf: {label,page} / txt: {label,page}）
+let pdfOutlinePages = null; // PDF 书签对应页号（与 tocItems 对齐）
 let chromeVisible = true;
 
 function showLoading(on) { $('#loading').classList.toggle('hidden', !on); }
@@ -648,6 +729,7 @@ function closeReader() {
   if (currentReader && currentReader.destroy) { try { currentReader.destroy(); } catch (e) {} }
   currentReader = null; currentBook = null; activeType = null;
   pdfShells = []; pdfRendered = null; currentPdfPage = 1;
+  tocItems = []; pdfOutlinePages = null;
   closeDrawers();
   $('#reader').classList.add('hidden');
 }
@@ -655,7 +737,14 @@ function closeReader() {
 function closeDrawers() {
   $('#tocDrawer').classList.remove('open');
   $('#settingsDrawer').classList.remove('open');
+  $('#animSheet').classList.remove('open');
+  $('#bgSheet').classList.remove('open');
   $('#mask').classList.remove('show');
+}
+function openSheet(id) {
+  closeDrawers();
+  $('#' + id).classList.add('open');
+  $('#mask').classList.add('show');
 }
 
 async function openBook(id) {
@@ -733,8 +822,9 @@ async function openEpub(rec) {
 
   try {
     const nav = await epubBook.loaded.navigation;
-    renderToc(flattenEpubNav(nav.toc));
-  } catch (e) { renderToc([]); }
+    tocItems = flattenEpubNav(nav.toc);
+    renderToc(tocItems);
+  } catch (e) { tocItems = []; renderToc([]); }
 
   epubLocations = await epubBook.locations.generate(1200).catch(() => null);
   debugInfo(`EPUB spine=${epubBook.spine.length} nav=${(epubBook.navigation && epubBook.navigation.toc || []).length}`);
@@ -768,6 +858,7 @@ function onEpubRelocated(loc) {
       ifr.classList.remove('anim-slide-right', 'anim-slide-left', 'anim-cover-right', 'anim-cover-left');
       void ifr.offsetWidth;
       ifr.classList.add(cls);
+      setTimeout(() => { if (ifr.classList.contains(cls)) ifr.classList.remove(cls); }, 450);
     }
   }
   lastEpubCfi = loc && loc.start && loc.start.cfi;
@@ -806,8 +897,18 @@ async function openPdf(rec) {
 
   try {
     const outline = await pdfDoc.getOutline();
-    renderToc(flattenOutline(outline || []));
-  } catch (e) { renderToc([]); }
+    tocItems = flattenOutline(outline || []);
+    renderToc(tocItems);
+    pdfOutlinePages = await Promise.all(tocItems.map(async it => {
+      try {
+        let ref = it.dest;
+        if (typeof ref === 'string') ref = await pdfDoc.getDestination(ref);
+        if (Array.isArray(ref)) ref = ref[0];
+        const idx = await pdfDoc.getPageIndex(ref);
+        return idx + 1;
+      } catch (e) { return null; }
+    }));
+  } catch (e) { tocItems = []; pdfOutlinePages = []; renderToc([]); }
 
   pdfObserver = new IntersectionObserver(entries => {
     for (const en of entries) if (en.isIntersecting) renderPdfPage(parseInt(en.target.dataset.pg, 10));
@@ -977,6 +1078,14 @@ function renderTxtPage() {
   curTxtLayer = layer;
   renderPageInto(layer, txtState.page);
 }
+function reflowTxt() {
+  if (!currentReader || currentReader.type !== 'txt' || !txtState.lines.length) return;
+  const curLine = (txtState.pages[txtState.page] || [0])[0];
+  paginateTxt();
+  txtState.page = findPageOfLine(curLine);
+  renderTxtPage();
+  updateProgressUI();
+}
 function debugInfo(s) {
   if (new URLSearchParams(location.search).get('debug')) document.title = s;
 }
@@ -992,7 +1101,8 @@ async function openTxt(rec) {
   const saved = rec.progress && rec.progress.detail && rec.progress.detail.page;
   txtState.page = clamp(saved || 0, 0, Math.max(0, txtState.pages.length - 1));
   renderTxtPage();
-  renderToc(txtState.chapters.map(c => ({ label: c.label, page: c.page, depth: c.depth })));
+  tocItems = txtState.chapters.map(c => ({ label: c.label, page: c.page, depth: c.depth }));
+  renderToc(tocItems);
   updateProgressUI();
 }
 function goTxtPage(p) {
@@ -1006,6 +1116,8 @@ function goTxtPage(p) {
   if (mode === 'none' || !stage || !curTxtLayer) {
     renderTxtPage();
   } else {
+    // 先清掉动画未结束残留的旧层，防止快速翻页产生重影
+    for (const l of stage.querySelectorAll('.txt-page-layer')) { if (l !== curTxtLayer) l.remove(); }
     const newLayer = document.createElement('div');
     newLayer.className = 'txt-page-layer';
     stage.appendChild(newLayer);
@@ -1050,6 +1162,62 @@ function prevPage() {
   else if (activeType === 'pdf') { scrollToPdfPage(currentPdfPage - 1); }
 }
 
+/* ================= 章节 ================= */
+function currentChapter() {
+  if (!currentBook || !tocItems.length) return { idx: 0, total: 0, name: '—' };
+  let i = -1;
+  if (activeType === 'txt') {
+    const p = txtState.page;
+    for (let k = 0; k < tocItems.length; k++) if (tocItems[k].page <= p) i = k; else break;
+  } else if (activeType === 'pdf') {
+    const pg = currentPdfPage;
+    for (let k = 0; k < tocItems.length; k++) {
+      const cp = pdfOutlinePages && pdfOutlinePages[k] != null ? pdfOutlinePages[k] : Infinity;
+      if (cp <= pg) i = k; else break;
+    }
+  } else if (activeType === 'epub') {
+    let href = null;
+    try { const loc = epubRendition && epubRendition.currentLocation(); href = loc && loc.start && loc.start.href; } catch (e) {}
+    if (href) {
+      let best = -1;
+      for (let k = 0; k < tocItems.length; k++) {
+        const th = tocItems[k].href;
+        if (th && (href === th || href.startsWith(th))) best = k;
+      }
+      i = best;
+    }
+  }
+  const idx = i >= 0 ? i + 1 : 0;
+  return { idx, total: tocItems.length, name: i >= 0 ? (tocItems[i].label || '—') : '—' };
+}
+function goChapter(step) {
+  if (!tocItems.length) { toast('本书暂无目录'); return; }
+  const cur = currentChapter();
+  const target = cur.idx - 1 + step;
+  if (target < 0 || target >= tocItems.length) { toast(step > 0 ? '已经是最后一章' : '已经是第一章'); return; }
+  const it = tocItems[target];
+  if (activeType === 'txt' && it.page != null) { goTxtPage(it.page); }
+  else if (activeType === 'epub' && it.href) { epubRendition && epubRendition.display(it.href); }
+  else if (activeType === 'pdf') {
+    const pg = pdfOutlinePages && pdfOutlinePages[target] != null ? pdfOutlinePages[target] : null;
+    if (pg) scrollToPdfPage(pg); else toast('无法跳转到该章节');
+  }
+  closeDrawers();
+}
+function updateChapterUI() {
+  const c = currentChapter();
+  $('#chapName').textContent = c.name;
+  $('#chapIdx').textContent = c.total ? `${c.idx}/${c.total}` : '0/0';
+  $('#btnPrevChap').disabled = !c.total || c.idx <= 1;
+  $('#btnNextChap').disabled = !c.total || c.idx >= c.total;
+  const bar = $('#chapBarFill');
+  let pct = currentBook && currentBook.progress && currentBook.progress.percent != null ? currentBook.progress.percent : 0;
+  if (activeType === 'txt' && txtState.pages.length) pct = (txtState.page + 1) / txtState.pages.length;
+  else if (activeType === 'pdf' && pdfDoc) pct = currentPdfPage / pdfDoc.numPages;
+  else if (activeType === 'epub' && epubLocations && lastEpubCfi) { try { pct = epubLocations.percentageFromCfi(lastEpubCfi); } catch (e) {} }
+  bar.style.width = Math.round(pct * 100) + '%';
+}
+
 /* ================= 进度 ================= */
 function saveProgress(percent, detail) {
   if (!currentBook) return;
@@ -1071,12 +1239,14 @@ function updateProgressUI() {
     pct = currentPdfPage / pdfDoc.numPages;
     label.textContent = currentPdfPage + ' / ' + pdfDoc.numPages;
     slider.value = Math.round(pct * 100);
+    updateChapterUI();
     return;
   } else if (activeType === 'txt' && txtState.pages.length) {
     pct = (txtState.page + 1) / txtState.pages.length;
   }
   label.textContent = Math.round(pct * 100) + '%';
   slider.value = Math.round(pct * 100);
+  updateChapterUI();
 }
 function onSliderInput() {
   const pct = $('#progSlider').value / 100;
@@ -1135,10 +1305,14 @@ function applySettings() {
     const tv = $('#txtViewer');
     tv.style.color = text;
     tv.style.fontFamily = FONTS[settings.fontFamily];
-    tv.style.setProperty('--txt-font', FONTS[settings.fontFamily]);
     tv.style.fontSize = settings.fontSize + 'px';
     tv.style.lineHeight = settings.lineHeight + '';
     tv.style.letterSpacing = settings.letterSpacing + 'px';
+    tv.style.setProperty('--txt-font', FONTS[settings.fontFamily]);
+    tv.style.setProperty('--txt-size', settings.fontSize + 'px');
+    tv.style.setProperty('--txt-lh', settings.lineHeight + '');
+    tv.style.setProperty('--txt-ls', settings.letterSpacing + 'px');
+    tv.style.setProperty('--txt-seg', settings.segSpacing + 'px');
   } else if (activeType === 'epub') {
     applyEpubTheme();
   } else if (activeType === 'pdf') {
@@ -1159,6 +1333,8 @@ function syncSettingsUI() {
   $('#lhVal').textContent = settings.lineHeight.toFixed(2).replace(/0$/, '');
   $('#lsSlider').value = settings.letterSpacing;
   $('#lsVal').textContent = settings.letterSpacing;
+  $('#segSlider').value = settings.segSpacing;
+  $('#segVal').textContent = settings.segSpacing;
   const thumb = $('#bgImgThumb');
   thumb.classList.toggle('hidden', !bgImageURL);
   if (bgImageURL) thumb.src = bgImageURL;
@@ -1172,6 +1348,12 @@ function onChangeTheme(theme) {
 function toggleChrome() {
   chromeVisible = !chromeVisible;
   $('#reader').classList.toggle('chrome-hidden', !chromeVisible);
+}
+function syncAnimSheet() {
+  for (const it of $$('#animSheet .sheet-item[data-anim]')) it.classList.toggle('on', it.dataset.anim === settings.pageAnim);
+}
+function syncBgSheet() {
+  for (const s of $$('#bgSheetSwatches .swatch')) s.classList.toggle('active', s.dataset.theme === settings.theme);
 }
 
 /* ================= 事件 ================= */
@@ -1207,22 +1389,37 @@ function bindEvents() {
   });
 
   $('#btnBack').addEventListener('click', () => { closeReader(); });
-  $('#btnToc').addEventListener('click', () => {
-    $('#settingsDrawer').classList.remove('open');
-    $('#tocDrawer').classList.toggle('open');
-    $('#mask').classList.toggle('show', $('#tocDrawer').classList.contains('open'));
-  });
+  $('#btnToc').addEventListener('click', () => { closeDrawers(); $('#tocDrawer').classList.add('open'); $('#mask').classList.add('show'); });
   $('#tocClose').addEventListener('click', closeDrawers);
-  $('#btnSettings').addEventListener('click', () => {
-    $('#tocDrawer').classList.remove('open');
-    $('#settingsDrawer').classList.toggle('open');
-    $('#mask').classList.toggle('show', $('#settingsDrawer').classList.contains('open'));
-  });
   $('#settingsClose').addEventListener('click', closeDrawers);
   $('#mask').addEventListener('click', closeDrawers);
 
-  $('#btnPrev').addEventListener('click', prevPage);
-  $('#btnNext').addEventListener('click', nextPage);
+  // 底部工具行
+  $('#btnToolToc').addEventListener('click', () => { closeDrawers(); $('#tocDrawer').classList.add('open'); $('#mask').classList.add('show'); });
+  $('#btnToolSettings').addEventListener('click', () => { closeDrawers(); $('#settingsDrawer').classList.add('open'); $('#mask').classList.add('show'); });
+  $('#btnToolBg').addEventListener('click', () => { openSheet('bgSheet'); syncBgSheet(); });
+  $('#btnToolAnim').addEventListener('click', () => { openSheet('animSheet'); syncAnimSheet(); });
+
+  // 翻页动画面板
+  $('#animSheet').addEventListener('click', e => {
+    const it = e.target.closest('.sheet-item[data-anim]');
+    if (!it) return;
+    settings.pageAnim = it.dataset.anim;
+    saveSettings();
+    syncAnimSheet();
+  });
+  $('#animSheetClose').addEventListener('click', closeDrawers);
+
+  // 背景面板
+  $('#bgSheetSwatches').addEventListener('click', e => {
+    const s = e.target.closest('.swatch');
+    if (s) { onChangeTheme(s.dataset.theme); syncBgSheet(); }
+  });
+  $('#bgSheetFull').addEventListener('click', () => { closeDrawers(); $('#settingsDrawer').classList.add('open'); $('#mask').classList.add('show'); });
+  $('#bgSheetClose').addEventListener('click', closeDrawers);
+
+  $('#btnPrevChap').addEventListener('click', () => goChapter(-1));
+  $('#btnNextChap').addEventListener('click', () => goChapter(1));
   $('#progSlider').addEventListener('input', onSliderInput);
 
   // PDF 滚动/点按（容器常驻，只绑定一次）
@@ -1277,14 +1474,15 @@ function bindEvents() {
     toast('已移除背景图');
   });
 
-  // 字号 / 字体 / 行距 / 字距
-  $('#fsSlider').addEventListener('input', e => { settings.fontSize = +e.target.value; applySettings(); });
-  $('#fsMinus').addEventListener('click', () => { settings.fontSize = clamp(settings.fontSize - 1, 14, 28); applySettings(); });
-  $('#fsPlus').addEventListener('click', () => { settings.fontSize = clamp(settings.fontSize + 1, 14, 28); applySettings(); });
-  $('#fontSelect').addEventListener('change', e => { settings.fontFamily = e.target.value; applySettings(); });
+  // 字号 / 字体 / 行距 / 字距 / 段距
+  $('#fsSlider').addEventListener('input', e => { settings.fontSize = +e.target.value; applySettings(); reflowTxt(); });
+  $('#fsMinus').addEventListener('click', () => { settings.fontSize = clamp(settings.fontSize - 1, 14, 28); applySettings(); reflowTxt(); });
+  $('#fsPlus').addEventListener('click', () => { settings.fontSize = clamp(settings.fontSize + 1, 14, 28); applySettings(); reflowTxt(); });
+  $('#fontSelect').addEventListener('change', e => { settings.fontFamily = e.target.value; applySettings(); reflowTxt(); });
   $('#animSelect').addEventListener('change', e => { settings.pageAnim = e.target.value; saveSettings(); });
-  $('#lhSlider').addEventListener('input', e => { settings.lineHeight = +e.target.value; applySettings(); });
-  $('#lsSlider').addEventListener('input', e => { settings.letterSpacing = +e.target.value; applySettings(); });
+  $('#lhSlider').addEventListener('input', e => { settings.lineHeight = +e.target.value; applySettings(); reflowTxt(); });
+  $('#lsSlider').addEventListener('input', e => { settings.letterSpacing = +e.target.value; applySettings(); reflowTxt(); });
+  $('#segSlider').addEventListener('input', e => { settings.segSpacing = +e.target.value; applySettings(); reflowTxt(); });
 
   // 键盘翻页
   document.addEventListener('keydown', e => {
@@ -1319,11 +1517,7 @@ function bindEvents() {
   window.addEventListener('resize', debounce(() => {
     if (activeType === 'epub') { epubRendition && epubRendition.resize(); }
     else if (activeType === 'txt') {
-      const curLine = (txtState.pages[txtState.page] || [0])[0];
-      paginateTxt();
-      txtState.page = findPageOfLine(curLine);
-      renderTxtPage();
-      updateProgressUI();
+      reflowTxt();
     } else if (activeType === 'pdf') {
       pdfRendered.clear();
       for (const s of pdfShells) s.innerHTML = '';
